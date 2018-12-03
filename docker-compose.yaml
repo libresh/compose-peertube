@@ -1,5 +1,4 @@
 version: '2'
-
 networks:
   lb_web:
     external: true
@@ -9,7 +8,6 @@ networks:
       driver: default
       config:
       - subnet: 10.0.${SUBNET}.0/24
-
 services:
   web:
     image: nginx
@@ -35,10 +33,6 @@ services:
       POSTGRES_DB: peertube
     networks:
       - back
-
-  redis:
-"docker-compose.yaml" 74L, 1480C
-
   redis:
     image: redis:alpine
     restart: always
@@ -46,7 +40,6 @@ services:
       - ./redis:/data
     networks:
       - back
-
   app:
     build: .
     restart: always
