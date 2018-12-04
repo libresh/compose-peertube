@@ -23,7 +23,7 @@ services:
       - back
       - lb_web
   db:
-    image: postgres:alpine
+    image: postgres:${POSTGRES_VERSION:10.6}
     restart: always
     volumes:
       - ./db:/var/lib/postgresql/data
@@ -34,35 +34,21 @@ services:
     networks:
       - back
   redis:
-    image: redis:alpine
+    image: redis:${REDIS_VERSION:-1.2.1}
     restart: always
     volumes:
       - ./redis:/data
     networks:
       - back
   app:
-    build: .
+    image: chocobozzz/peertube:${PEERTUBE_VERSION:-production-stretch}
     restart: always
     links:
       - db
     depends_on:
       - db
       - redis
-    environment:
-      PEERTUBE_HOSTNAME: 
-      PEERTUBE_PORT: 80
-      PEERTUBE_HTTPS: "false"
-      PEERTUBE_ADMIN_EMAIL: 
-      PEERTUBE_DB_HOSTNAME: db
-      PEERTUBE_DB_USERNAME: peertube
-      PEERTUBE_DB_PASSWORD: peertube
-      PEERTUBE_SIGNUP_ENABLED: "true"
-      PEERTUBE_TRANSCODING_ENABLED: "true"
-      PEERTUBE_REDIS_HOSTNAME: redis
-      PEERTUBE_SMTP_HOSTNAME:
-      PEERTUBE_SMTP_PORT: 25
-      PEERTUBE_SMTP_FROM: 
-      PEERTUBE_SMTP_TLS: "true"
+    env_file: .env
     volumes:
       - ./data:/data
     networks:
