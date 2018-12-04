@@ -26,7 +26,7 @@ services:
     image: postgres:${POSTGRES_VERSION:10.6}
     restart: always
     volumes:
-      - ./db:/var/lib/postgresql/data
+      - ./data/postgres:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: peertube
       POSTGRES_PASSWORD: peertube
@@ -37,7 +37,7 @@ services:
     image: redis:${REDIS_VERSION:-1.2.1}
     restart: always
     volumes:
-      - ./redis:/data
+      - ./data/redis:/data
     networks:
       - back
   app:
@@ -50,6 +50,6 @@ services:
       - redis
     env_file: .env
     volumes:
-      - ./data:/data
+      - ./data/peertube:/data
     networks:
       - back
